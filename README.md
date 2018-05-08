@@ -93,7 +93,52 @@ sns.boxplot(x="neu", y="interest_level", hue="interest_level", data=sentiment_da
 
 ### Clustering using K-means
 
-![13](https://github.com/akshaygade/Renthop-/blob/master/images/13.png)
+```python
+
+fig, ax = plt.subplots()
+fig.set_size_inches(10, 6)
+scatter = ax.scatter(df['longitude'], df['latitude'], c='m', edgecolor='k', alpha=.4, s=150)
+plt.show(scatter)
+
+x = df
+latmean = x['latitude'].mean()
+
+lonmean = x['longitude'].mean()
+
+x=x.reset_index()
+
+faa=[]
+for i in range(0,len(x)):
+    faa.append(np.sqrt(((x['latitude'][i] - latmean) * (x['latitude'][i] - latmean) ) + ((x['longitude'][i] - lonmean) * (x['longitude'][i] - lonmean)) ))
+
+x['distance'] = faa
+x = x[x['distance'] < 0.5]
+fig, ax = plt.subplots()
+fig.set_size_inches(10, 6)
+scatter = ax.scatter(x['longitude'], x['latitude'], c='m', edgecolor='k', alpha=.4, s=20)
+plt.show()
+
+
+# K Means Cluster
+ncomp = 5
+km = KMeans(ncomp, random_state=1)
+km.fit(x['latitude'].reshape(-1,1))
+x['labels'] = km.labels_
+:
+#Visualizing the clusters
+kmeans = KMeans(n_clusters = 5, init = 'k-means++', random_state = 42)
+y_kmeans = kmeans.fit_predict(X)
+
+style.use('fivethirtyeight')
+fig.set_size_inches(10, 6)
+plt.scatter(X[y_kmeans == 0, 0], X[y_kmeans == 0, 1], s = 20, c = 'red', label = 'Cluster 1')
+plt.scatter(X[y_kmeans == 1, 0], X[y_kmeans == 1, 1], s = 20, c = 'blue', label = 'Cluster 2')
+plt.scatter(X[y_kmeans == 2, 0], X[y_kmeans == 2, 1], s = 20, c = 'green', label = 'Cluster 3')
+plt.scatter(X[y_kmeans == 3, 0], X[y_kmeans == 3, 1], s = 20, c = 'cyan', label = 'Cluster 4')
+plt.scatter(X[y_kmeans == 4, 0], X[y_kmeans == 4, 1], s = 20, c = 'magenta', label = 'Cluster 5')
+plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s = 40, c = 'yellow', label = 'Centroids')
+```
+![14](https://github.com/akshaygade/Renthop-/blob/master/images/14.png)
 
 
 
