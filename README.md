@@ -9,20 +9,7 @@ bathrooms: number of bathrooms bedrooms: number of bathrooms building_id created
 
 ### Exploratory Data Analysis
 
-```python
-import re
-import pandas as pd
-import numpy as np
-%matplotlib inline 
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn import datasets
-from textblob import TextBlob
-from sklearn.cluster import KMeans
-import sklearn.metrics as sm
-from collections import Counter
-```
-
+![1](https://github.com/akshaygade/Renthop-/blob/master/images/1.png)
 
 
 
