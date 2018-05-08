@@ -60,6 +60,8 @@ most_occur[1:30]
 
 
 ### Sentiment Analysis
+
+```python
 from nltk import sent_tokenize
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
 df['tokens'] = df['description'].apply(sent_tokenize)
@@ -86,6 +88,7 @@ sns.boxplot(x="pos", y="interest_level", hue="interest_level", data=sentiment_da
 sns.boxplot(x="neu", y="interest_level", hue="interest_level", data=sentiment_data);
 
 ![13](https://github.com/akshaygade/Renthop-/blob/master/images/13.png)
+```
 
 
 ### Clustering using K-means
