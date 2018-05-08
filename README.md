@@ -86,9 +86,9 @@ sns.boxplot(x="compound", y="interest_level", hue="interest_level", data=sentime
 sns.boxplot(x="neg", y="interest_level", hue="interest_level", data=sentiment_data);
 sns.boxplot(x="pos", y="interest_level", hue="interest_level", data=sentiment_data);
 sns.boxplot(x="neu", y="interest_level", hue="interest_level", data=sentiment_data);
-
-![13](https://github.com/akshaygade/Renthop-/blob/master/images/13.png)
 ```
+![13](https://github.com/akshaygade/Renthop-/blob/master/images/13.png)
+
 
 
 ### Clustering using K-means
@@ -141,6 +141,30 @@ plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s = 40
 ![14](https://github.com/akshaygade/Renthop-/blob/master/images/14.png)
 
 
+### Feature Engineering
+#### Exploring the geographic location of all the listings
+#### Plotting the neighborhoods in NYC
+![14](https://github.com/akshaygade/Renthop-/blob/master/images/14.png)
+#### Plotting the number of data points on top of the layer
+![15](https://github.com/akshaygade/Renthop-/blob/master/images/15.png)
+#### Plotting the number of data points on top of the layer
+![16](https://github.com/akshaygade/Renthop-/blob/master/images/16.png)
+### Exploring transportation by calculating nearest subway station
+![17](https://github.com/akshaygade/Renthop-/blob/master/images/17.png)
+
+
+### Machine Learning
+
+#### Multi Layer Perceptron
+
+```python
+301]:
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import log_loss
+```
 
 
 
