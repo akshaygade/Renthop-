@@ -144,8 +144,6 @@ plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s = 40
 ### Feature Engineering
 #### Exploring the geographic location of all the listings
 #### Plotting the neighborhoods in NYC
-![14](https://github.com/akshaygade/Renthop-/blob/master/images/14.png)
-#### Plotting the number of data points on top of the layer
 ![15](https://github.com/akshaygade/Renthop-/blob/master/images/15.png)
 #### Plotting the number of data points on top of the layer
 ![16](https://github.com/akshaygade/Renthop-/blob/master/images/16.png)
@@ -154,11 +152,8 @@ plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s = 40
 
 
 ### Machine Learning
-
-#### Multi Layer Perceptron
-
+Importing packages
 ```python
-301]:
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -166,5 +161,131 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import log_loss
 ```
 
+Train-test split
+```python
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.4,random_state=42)
+```
 
+Standardizing the variables
+```python
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_val = sc.transform(X_val)
+```
+
+#### Multi Layer Perceptron
+```python
+from sklearn.neural_network import MLPClassifier
+mlp = MLPClassifier(hidden_layer_sizes=(150,150,150))
+mlp.fit(X_train,y_train)
+pred = mlp.predict(X_val)
+
+fpr, tpr, threshold = metrics.roc_curve(y_val, pred,pos_label=1)
+roc_auc = metrics.auc(fpr, tpr)
+
+```
+
+#### Random Forest
+```python
+
+clf = RandomForestClassifier(n_estimators=50,n_jobs=-1,min_samples_leaf=5)
+%time clf.fit(X_train, y_train)
+y_val_pred = clf.predict(X_val)
+accuracy_score(y_val,y_val_pred)
+```
+#### SVM
+```python
+from sklearn.svm import SVC
+classifier = SVC(kernel = 'rbf', random_state = 0)
+classifier.fit(X_train, y_train)
+
+# Predicting the Test set 
+y_pred = classifier.predict(X_val)
+```
+
+#### Artificial Neural Netwok
+``` python  
+import keras
+from keras.models import Sequential
+from keras.layers import Dense
+from sklearn.model_selection import GridSearchCV
+from keras.wrappers.scikit_learn import KerasClassifier
+
+#Initialize neural network
+classifier = Sequential()
+
+def build_classifier(optimizer):
+    classifier = Sequential()
+    classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 8))
+    classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
+    classifier.compile(optimizer = optimizer, loss = 'binary_crossentropy', metrics = ['accuracy'])
+    return classifier
+classifier = KerasClassifier(build_fn = build_classifier)
+parameters = {'batch_size': [1],
+              'epochs': [5],
+              'optimizer': ['adam', 'rmsprop']}
+grid_search = GridSearchCV(estimator = classifier,
+                           param_grid = parameters,
+                           scoring = 'accuracy',
+                           cv = 5)
+grid_search = grid_search.fit(X_train, y_train)
+
+
+best_parameters = grid_search.best_params_
+best_accuracy = grid_search.best_score_
+best_accuracy
+
+```
+
+
+#### K nearest neighbors
+
+```python
+KNN_grid = [{'n_neighbors': [1, 3, 5, 7, 9, 11, 13, 15, 17], 'weights': ['uniform', 'distance']}]
+
+    # build a grid search to find the best parameters
+gridsearchKNN = GridSearchCV(KNeighborsClassifier(), KNN_grid, cv=5)
+
+    # run the grid search
+gridsearchKNN.fit(X_train, y_train)
+pred=gridsearchKNN.predict(X_val)
+
+```
+
+#### Decision Tree
+
+```python
+
+DT_grid = [{'max_depth': [3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 'criterion': ['gini', 'entropy']}]
+
+# build a grid search to find the best parameters
+gridsearchDT = GridSearchCV(DecisionTreeClassifier(), DT_grid, cv=5)
+
+# run the grid search
+gridsearchDT.fit(X_train, y_train)
+pred=gridsearchDT.predict(X_val)
+
+```
+
+
+#### Logistic Regression
+
+``` python
+
+LREG_grid = [{'C': [0.5, 1, 1.5, 2], 'penalty': ['l1', 'l2']}]
+gridsearchLREG = GridSearchCV(LogisticRegression(), LREG_grid, cv=5)
+gridsearchLREG.fit(X_train, y_train)
+pred=gridsearchLREG.predict(X_val)
+
+print(accuracy_score(y_val, pred))
+
+```
+
+
+### Model results
+
+#### We have considered ROC - AUC curves as our metric and the below picture shows the comparision of all the models, the best model being Multilayer Perceptron
+![18](https://github.com/akshaygade/Renthop-/blob/master/images/18.png)
 
